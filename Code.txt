@@ -1,0 +1,110 @@
+// defines pins numbers
+const int stepPin = 3; 
+const int dirPin = 4;
+const int sensorMin = 0;     // sensor minimum
+const int sensorMax = 1024;  // sensor maximum
+int rainflag=0;
+int lightflag=0;
+void setup() {
+  
+  pinMode(stepPin,OUTPUT); 
+  pinMode(dirPin,OUTPUT);
+  pinMode(10,INPUT);
+  pinMode(11,INPUT);
+  
+
+}
+void loop() {
+
+
+ int rain = analogRead(A0);
+ int range = map(rain, sensorMin, sensorMax, 0, 2);
+ int light = analogRead(A5);
+ 
+ 
+ 
+  
+// light open in morning
+if(light<50)
+    if(lightflag==0)
+    {digitalWrite(dirPin,HIGH); // Enables the motor to move in a particular direction
+  // Makes 200 pulses for making one full cycle rotation
+  for(int x = 0; x <5000; x++) {
+    digitalWrite(stepPin,HIGH); 
+    delayMicroseconds(500); 
+    digitalWrite(stepPin,LOW); 
+    delayMicroseconds(500); 
+  } 
+  lightflag=1;}
+
+// light close
+
+if(light>200)
+    if(lightflag==1)
+    {digitalWrite(dirPin,LOW); // Enables the motor to move in a particular direction
+  // Makes 200 pulses for making one full cycle rotation
+  for(int x = 0; x <5000; x++) {
+    digitalWrite(stepPin,HIGH); 
+    delayMicroseconds(500); 
+    digitalWrite(stepPin,LOW); 
+    delayMicroseconds(500); 
+  }
+  lightflag=0;}
+
+
+  
+  // rain open
+ if(range==0)
+    if(rainflag==0)
+    {digitalWrite(dirPin,HIGH); // Enables the motor to move in a particular direction
+  // Makes 200 pulses for making one full cycle rotation
+  for(int x = 0; x <5000; x++) {
+    digitalWrite(stepPin,HIGH); 
+    delayMicroseconds(500); 
+    digitalWrite(stepPin,LOW); 
+    delayMicroseconds(500); 
+  } 
+ rainflag=1;}
+
+
+// rain close
+if(range>0)
+    if(rainflag==1)
+    {digitalWrite(dirPin,LOW); // Enables the motor to move in a particular direction
+  // Makes 200 pulses for making one full cycle rotation
+  for(int x = 0; x <5000; x++) {
+    digitalWrite(stepPin,HIGH); 
+    delayMicroseconds(500); 
+    digitalWrite(stepPin,LOW); 
+    delayMicroseconds(500); 
+  }
+  rainflag=0;}
+
+ //remot open 
+if (digitalRead(10)==HIGH) 
+{
+  digitalWrite(dirPin,HIGH); // Enables the motor to move in a particular direction
+  // Makes 200 pulses for making one full cycle rotation
+  for(int x = 0; x <5000; x++) {
+    digitalWrite(stepPin,HIGH); 
+    delayMicroseconds(500); 
+    digitalWrite(stepPin,LOW); 
+    delayMicroseconds(500); 
+  }
+}
+
+  
+   // remot close  
+    if (digitalRead(11)==HIGH)
+  {digitalWrite(dirPin,LOW); //Changes the rotations direction
+  // Makes 400 pulses for making two full cycle rotation
+  for(int x = 0; x <5000; x++) {
+    digitalWrite(stepPin,HIGH);
+    delayMicroseconds(500);
+    digitalWrite(stepPin,LOW);
+    delayMicroseconds(500);
+  }
+  }
+
+
+}
